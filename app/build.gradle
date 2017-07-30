@@ -30,6 +30,6 @@ dependencies {
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0-alpha5"
 
     compile 'com.github.javafaker:javafaker:0.13'
-
+    compile 'com.android.support:recyclerview-v7:26.0.0'
     testCompile 'junit:junit:4.12'
 }

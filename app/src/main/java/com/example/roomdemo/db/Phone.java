@@ -9,10 +9,10 @@ import android.arch.persistence.room.PrimaryKey;
 public class Phone {
 
     @PrimaryKey(autoGenerate = true)
-    public int id;
+    public long id;
 
     @ColumnInfo(name = "contact_id")
-    public int contactId;
+    public long contactId;
 
     @ColumnInfo(name = "phone_number")
     public String phoneNumber;

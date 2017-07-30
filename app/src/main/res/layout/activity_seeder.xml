@@ -7,8 +7,17 @@
         android:id="@+id/btn_seed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Seed contacts"
+        android:text="@string/seed_contacts"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
         />
 
+    <TextView
+        android:id="@+id/tv_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        android:visibility="gone"/>
 
 </LinearLayout>

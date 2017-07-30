@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Room demo</string>
+    <string name="seed_contacts">Seed contacts</string>
 </resources>

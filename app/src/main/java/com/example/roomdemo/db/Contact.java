@@ -8,7 +8,7 @@ import android.arch.persistence.room.PrimaryKey;
 public class Contact {
 
     @PrimaryKey(autoGenerate = true)
-    public int id;
+    public long id;
 
     @ColumnInfo(name = "first_name")
     public String firstName;

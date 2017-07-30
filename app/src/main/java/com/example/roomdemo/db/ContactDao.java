@@ -10,13 +10,15 @@ import java.util.List;
 public interface ContactDao {
 
     @Insert
-    void insertContact(Contact... c);
+    long insertContact(Contact c);
 
     @Query("SELECT * FROM contacts WHERE id = :id")
-    Contact getContactById(int id);
+    Contact getContactById(long id);
 
     @Query("SELECT * FROM phones WHERE contact_id = :contactId")
-    List<Phone> getContactPhones(int contactId);
+    List<Phone> getContactPhones(long contactId);
 
 
+    @Query("SELECT * FROM contacts")
+    List<Contact> selectAll();
 }
