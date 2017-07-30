@@ -1,9 +1,8 @@
 package com.example.roomdemo;
 
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,9 +15,13 @@ import android.widget.TextView;
 
 import com.example.roomdemo.db.AppDb;
 import com.example.roomdemo.db.Contact;
-import com.example.roomdemo.db.ContactDao;
 
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,7 +37,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        new QueryContactsTask().execute();
+        AppDb.instance(this).contactDao().selectAll()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<Contact>>() {
+                    @Override
+                    public void accept(@NonNull List<Contact> contacts) throws Exception {
+                        recyclerView.setAdapter(new ContactListAdapter(contacts));
+                    }
+                });
 
         super.onResume();
     }
@@ -58,20 +69,6 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    private class QueryContactsTask extends AsyncTask<Void, Void, List<Contact>> {
-
-        @Override
-        protected List<Contact> doInBackground(Void... voids) {
-            ContactDao contactDao = AppDb.instance(MainActivity.this).contactDao();
-
-            return contactDao.selectAll();
-        }
-
-        @Override
-        protected void onPostExecute(List<Contact> contacts) {
-            recyclerView.setAdapter(new ContactListAdapter(contacts));
-        }
-    }
 
     private class ContactListAdapter extends RecyclerView.Adapter<ContactListItemHolder> {
 

@@ -4,7 +4,11 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
+import org.reactivestreams.Publisher;
+
 import java.util.List;
+
+import io.reactivex.Flowable;
 
 @Dao
 public interface ContactDao {
@@ -20,5 +24,5 @@ public interface ContactDao {
 
 
     @Query("SELECT * FROM contacts")
-    List<Contact> selectAll();
+    Flowable<List<Contact>> selectAll();
 }
