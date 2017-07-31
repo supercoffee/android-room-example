@@ -16,10 +16,16 @@ import java.util.List;
 
 class ContactPhoneAdapater extends RecyclerView.Adapter<ContactPhoneVH> {
 
-    private final List<Phone> phones;
+    interface OnRemoveListener {
+        void onRemove(Phone phone);
+    }
 
-    public ContactPhoneAdapater(List<Phone> phones) {
+    private final List<Phone> phones;
+    private final OnRemoveListener removeListener;
+
+    public ContactPhoneAdapater(List<Phone> phones, OnRemoveListener removeListener) {
         this.phones = phones;
+        this.removeListener = removeListener;
     }
 
     @Override
@@ -49,6 +55,16 @@ class ContactPhoneAdapater extends RecyclerView.Adapter<ContactPhoneVH> {
         }
         holder.phoneNumberText.addTextChangedListener(onTextChanged(phone));
         holder.selectedTypeSpinner.setOnItemSelectedListener(onItemSelected(phone));
+        holder.deleteButton.setOnClickListener(onRemove(phone));
+    }
+
+    private View.OnClickListener onRemove(final Phone phone) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                removeListener.onRemove(phone);
+            }
+        };
     }
 
     private AdapterView.OnItemSelectedListener onItemSelected(final Phone phone) {

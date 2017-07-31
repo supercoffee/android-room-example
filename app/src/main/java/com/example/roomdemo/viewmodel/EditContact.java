@@ -78,4 +78,14 @@ public class EditContact extends ViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
     }
+
+    public void deletePhone(final Phone phone) {
+        new CompletableFromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                phoneDao.delete(phone);
+            }
+        }).subscribeOn(Schedulers.io())
+                .subscribe();
+    }
 }

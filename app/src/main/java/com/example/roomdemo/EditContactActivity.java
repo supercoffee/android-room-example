@@ -39,6 +39,14 @@ public class EditContactActivity extends AppCompatActivity {
 
     private CompositeDisposable disposables = new CompositeDisposable();
 
+    private ContactPhoneAdapater.OnRemoveListener onPhoneRemoved =
+            new ContactPhoneAdapater.OnRemoveListener() {
+                @Override
+                public void onRemove(Phone phone) {
+                    editContactModel.deletePhone(phone);
+                }
+            };
+
     public static Intent intentFrom(Context context, Contact contact) {
         Intent i = new Intent(context, EditContactActivity.class);
         i.putExtra(EXTRA_CONTACT, contact);
@@ -83,7 +91,7 @@ public class EditContactActivity extends AppCompatActivity {
                             @Override
                             public void accept(@NonNull List<Phone> phones) throws Exception {
                                 EditContactActivity.this.phones = phones;
-                                recyclerView.setAdapter(new ContactPhoneAdapater(phones));
+                                recyclerView.setAdapter(new ContactPhoneAdapater(phones, onPhoneRemoved));
                             }
                         })
         );
