@@ -2,6 +2,8 @@ package com.example.roomdemo;
 
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +46,26 @@ class ContactPhoneAdapater extends RecyclerView.Adapter<ContactPhoneVH> {
                 break;
             }
         }
-        holder.bind(phone);
+        holder.phoneNumberText.addTextChangedListener(textWatcher(phone));
+    }
+
+    private TextWatcher textWatcher(final Phone phone) {
+        return new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                phone.phoneNumber = charSequence.toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        };
     }
 
     @Override

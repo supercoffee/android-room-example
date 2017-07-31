@@ -1,49 +1,26 @@
 package com.example.roomdemo;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.example.roomdemo.db.Phone;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 class ContactPhoneVH extends RecyclerView.ViewHolder {
 
-    final Spinner selectedType;
-    final EditText phoneNumberText;
+    @BindView(R.id.sp_phone_type)
+    Spinner selectedType;
 
-    private Phone phone;
-
-    final TextWatcher onTextChanged = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            phone.phoneNumber = charSequence.toString();
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-
-        }
-    };
+    @BindView(R.id.et_phone)
+    EditText phoneNumberText;
 
     ContactPhoneVH(View itemView) {
         super(itemView);
-        selectedType = itemView.findViewById(R.id.sp_phone_type);
-        phoneNumberText = itemView.findViewById(R.id.et_phone);
-
+        ButterKnife.bind(this, itemView);
+        assert selectedType != null;
+        assert phoneNumberText != null;
     }
-
-    void bind(Phone p) {
-        phoneNumberText.addTextChangedListener(onTextChanged);
-        this.phone = p;
-    }
-
 
 }
