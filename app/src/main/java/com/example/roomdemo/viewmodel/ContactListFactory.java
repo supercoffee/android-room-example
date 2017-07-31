@@ -15,8 +15,8 @@ public class ContactListFactory implements ViewModelProvider.Factory {
 
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(ContactList.class)) {
-            return (T) new ContactList(contactDao);
+        if (modelClass.isAssignableFrom(ContactListViewModel.class)) {
+            return (T) new ContactListViewModel(contactDao);
         }
         throw new RuntimeException(String.format("Unable to instantiate viewmodel %s", modelClass.getName()));
     }

@@ -18,8 +18,8 @@ public class EditContactFactory implements ViewModelProvider.Factory {
 
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(EditContact.class)) {
-            return (T) new EditContact(contactDao, contactId);
+        if (modelClass.isAssignableFrom(EditContactViewModel.class)) {
+            return (T) new EditContactViewModel(contactDao, contactId);
         }
         return null;
     }

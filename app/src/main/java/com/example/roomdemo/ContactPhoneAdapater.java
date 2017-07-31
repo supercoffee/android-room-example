@@ -12,7 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.example.roomdemo.db.Phone;
-import com.example.roomdemo.viewmodel.EditContact;
+import com.example.roomdemo.viewmodel.EditContactViewModel;
 
 import java.util.List;
 
@@ -23,12 +23,12 @@ import io.reactivex.schedulers.Schedulers;
 
 class ContactPhoneAdapater extends RecyclerView.Adapter<ContactPhoneVH> {
 
-    private final EditContact editContactModel;
+    private final EditContactViewModel editContactModel;
 
     @Nullable
     private List<Phone> phones;
 
-    public ContactPhoneAdapater(EditContact editContactModel) {
+    public ContactPhoneAdapater(EditContactViewModel editContactModel) {
         this.editContactModel = editContactModel;
 
         this.editContactModel.getPhones()

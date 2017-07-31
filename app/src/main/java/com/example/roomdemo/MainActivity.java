@@ -13,7 +13,7 @@ import android.view.View;
 
 import com.example.roomdemo.db.AppDb;
 import com.example.roomdemo.db.Contact;
-import com.example.roomdemo.viewmodel.ContactList;
+import com.example.roomdemo.viewmodel.ContactListViewModel;
 import com.example.roomdemo.viewmodel.ContactListFactory;
 
 import butterknife.BindView;
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(startEditContactActivity);
     }
 
-    private ContactList contactListModel;
+    private ContactListViewModel contactListModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         ContactListFactory cf = new ContactListFactory(AppDb.instance(this).contactDao());
-        contactListModel = ViewModelProviders.of(this, cf).get(ContactList.class);
+        contactListModel = ViewModelProviders.of(this, cf).get(ContactListViewModel.class);
         recyclerView.setAdapter(new ContactListAdapter(contactListModel, onItemClickListener));
     }
 

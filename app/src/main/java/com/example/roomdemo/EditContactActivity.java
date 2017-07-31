@@ -16,7 +16,7 @@ import android.widget.EditText;
 
 import com.example.roomdemo.db.AppDb;
 import com.example.roomdemo.db.Contact;
-import com.example.roomdemo.viewmodel.EditContact;
+import com.example.roomdemo.viewmodel.EditContactViewModel;
 import com.example.roomdemo.viewmodel.EditContactFactory;
 
 
@@ -31,7 +31,7 @@ public class EditContactActivity extends AppCompatActivity {
     // TODO: get rid of this cached value
     private Contact contact;
 
-    private EditContact editContactModel;
+    private EditContactViewModel editContactModel;
 
     private ContactPhoneAdapater adapter;
 
@@ -68,7 +68,7 @@ public class EditContactActivity extends AppCompatActivity {
 
         AppDb db = AppDb.instance(this);
         EditContactFactory factory = new EditContactFactory(db.contactDao(), contact.id);
-        editContactModel = ViewModelProviders.of(this, factory).get(EditContact.class);
+        editContactModel = ViewModelProviders.of(this, factory).get(EditContactViewModel.class);
         adapter = new ContactPhoneAdapater(editContactModel);
         recyclerView.setAdapter(adapter);
     }

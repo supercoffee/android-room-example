@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.roomdemo.db.Contact;
-import com.example.roomdemo.viewmodel.ContactList;
+import com.example.roomdemo.viewmodel.ContactListViewModel;
 
 import java.util.List;
 
@@ -20,13 +20,13 @@ class ContactListAdapter extends RecyclerView.Adapter<ContactListItemHolder> {
         void onItemClicked(View v, Contact c);
     }
 
-    private final ContactList viewModel;
+    private final ContactListViewModel viewModel;
     private final OnItemClickListener clickListener;
 
     @Nullable
     private List<Contact> contacts;
 
-    ContactListAdapter(ContactList contacts, OnItemClickListener clickListener) {
+    ContactListAdapter(ContactListViewModel contacts, OnItemClickListener clickListener) {
         this.clickListener = clickListener;
         this.viewModel = contacts;
         this.viewModel.getAllContacts()

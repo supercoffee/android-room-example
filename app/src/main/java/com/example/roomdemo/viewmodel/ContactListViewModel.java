@@ -14,11 +14,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class ContactList extends ViewModel {
+public class ContactListViewModel extends ViewModel {
 
     private final ContactDao contactDao;
 
-    public ContactList(ContactDao contactDao) {
+    public ContactListViewModel(ContactDao contactDao) {
         this.contactDao = contactDao;
     }
 

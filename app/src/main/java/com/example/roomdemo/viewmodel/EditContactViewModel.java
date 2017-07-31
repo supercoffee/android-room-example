@@ -16,12 +16,12 @@ import io.reactivex.internal.operators.completable.CompletableFromAction;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class EditContact extends ViewModel {
+public class EditContactViewModel extends ViewModel {
 
     private final ContactDao contactDao;
     private final long contactId;
 
-    public EditContact(ContactDao contactDao, long contactId) {
+    public EditContactViewModel(ContactDao contactDao, long contactId) {
         this.contactDao = contactDao;
         this.contactId = contactId;
     }
