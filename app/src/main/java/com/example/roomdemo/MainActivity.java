@@ -1,5 +1,6 @@
 package com.example.roomdemo;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,13 +13,13 @@ import android.view.View;
 
 import com.example.roomdemo.db.AppDb;
 import com.example.roomdemo.db.Contact;
+import com.example.roomdemo.viewmodel.ContactList;
+import com.example.roomdemo.viewmodel.ContactListFactory;
 
 import java.util.List;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,19 +34,22 @@ public class MainActivity extends AppCompatActivity {
                 }
             };
 
+    private ContactList contactListModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recyclerView = findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        ContactListFactory cf = new ContactListFactory(AppDb.instance(this).contactDao());
+        contactListModel = ViewModelProviders.of(this, cf).get(ContactList.class);
     }
 
     @Override
     protected void onResume() {
-        AppDb.instance(this).contactDao().selectAll()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+        contactListModel.getAllContacts()
                 .subscribe(new Consumer<List<Contact>>() {
                     @Override
                     public void accept(@NonNull List<Contact> contacts) throws Exception {
