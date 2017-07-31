@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".SeederActivity"/>
+        <activity android:name=".EditContactActivity"/>
     </application>
 
 </manifest>

@@ -27,11 +27,20 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
 
+    private ContactListAdapter.OnItemClickListener onItemClickListener =
+            new ContactListAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClicked(View v, Contact c) {
+                    Intent startEditContactActivity = EditContactActivity.intentFrom(MainActivity.this, c);
+                    startActivity(startEditContactActivity);
+                }
+            };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        recyclerView = findViewById(R.id.recycle_bin);
+        recyclerView = findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
@@ -43,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(new Consumer<List<Contact>>() {
                     @Override
                     public void accept(@NonNull List<Contact> contacts) throws Exception {
-                        recyclerView.setAdapter(new ContactListAdapter(contacts));
+                        recyclerView.setAdapter(new ContactListAdapter(contacts, onItemClickListener));
                     }
                 });
 
@@ -70,12 +79,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private class ContactListAdapter extends RecyclerView.Adapter<ContactListItemHolder> {
+    static private class ContactListAdapter extends RecyclerView.Adapter<ContactListItemHolder> {
+
+        interface OnItemClickListener {
+            void onItemClicked(View v, Contact c);
+        }
 
         final List<Contact> contacts;
+        final OnItemClickListener clickListener;
 
-        ContactListAdapter(List<Contact> contacts) {
+        ContactListAdapter(List<Contact> contacts, OnItemClickListener clickListener) {
             this.contacts = contacts;
+            this.clickListener = clickListener;
         }
 
         @Override
@@ -87,9 +102,15 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(ContactListItemHolder holder, int position) {
-            Contact c = contacts.get(position);
+            final Contact c = contacts.get(position);
             holder.lastNameView.setText(c.lastName);
             holder.firstNameView.setText(c.firstName);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    clickListener.onItemClicked(view, c);
+                }
+            });
         }
 
 

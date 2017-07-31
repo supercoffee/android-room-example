@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">Room demo</string>
     <string name="seed_contacts">Seed contacts</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="phone_number">Phone Number</string>
+
+    <string-array name="phone_types">
+        <item name="cell">Cell</item>
+        <item name="home">Home</item>
+        <item name="office">Office</item>
+    </string-array>
 </resources>
