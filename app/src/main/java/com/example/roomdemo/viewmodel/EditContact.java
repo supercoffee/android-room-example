@@ -61,9 +61,9 @@ public class EditContact extends ViewModel {
                 .subscribe();
     }
 
-    public Disposable addPhone(Contact contact) {
+    public Disposable addPhone() {
         final Phone phone = new Phone();
-        phone.contactId = contact.id;
+        phone.contactId = contactId;
 
         return new CompletableFromAction(new Action() {
             @Override

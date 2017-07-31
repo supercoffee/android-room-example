@@ -17,8 +17,6 @@ import com.example.roomdemo.db.Contact;
 import com.example.roomdemo.viewmodel.EditContact;
 import com.example.roomdemo.viewmodel.EditContactFactory;
 
-import io.reactivex.disposables.CompositeDisposable;
-
 
 public class EditContactActivity extends AppCompatActivity {
 
@@ -32,8 +30,6 @@ public class EditContactActivity extends AppCompatActivity {
     private Contact contact;
 
     private EditContact editContactModel;
-
-    private CompositeDisposable disposables = new CompositeDisposable();
 
     private ContactPhoneAdapater adapter;
 
@@ -64,7 +60,7 @@ public class EditContactActivity extends AppCompatActivity {
         addPhoneFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editContactModel.addPhone(contact);
+                editContactModel.addPhone();
             }
         });
 
@@ -79,7 +75,6 @@ public class EditContactActivity extends AppCompatActivity {
     protected void onPause() {
         saveContact();
         savePhones();
-        disposables.clear();
         super.onPause();
     }
 
