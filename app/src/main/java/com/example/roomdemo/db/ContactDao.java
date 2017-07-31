@@ -19,7 +19,7 @@ public interface ContactDao {
     long insertContact(Contact c);
 
     @Query("SELECT * FROM contacts WHERE id = :id")
-    Contact getContactById(long id);
+    Flowable<Contact> getContactById(long id);
 
     @Query("SELECT * FROM phones WHERE contact_id = :contactId")
     Flowable<List<Phone>> getContactPhones(long contactId);
