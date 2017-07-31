@@ -4,7 +4,6 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 
 import com.example.roomdemo.db.ContactDao;
-import com.example.roomdemo.viewmodel.ContactList;
 
 public class ContactListFactory implements ViewModelProvider.Factory {
 

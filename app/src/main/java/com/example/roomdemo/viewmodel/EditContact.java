@@ -2,14 +2,10 @@ package com.example.roomdemo.viewmodel;
 
 import android.arch.lifecycle.ViewModel;
 
-import com.example.roomdemo.EditContactActivity;
-import com.example.roomdemo.db.AppDb;
 import com.example.roomdemo.db.Contact;
 import com.example.roomdemo.db.ContactDao;
 import com.example.roomdemo.db.Phone;
-import com.example.roomdemo.db.PhoneDao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Flowable;
@@ -23,20 +19,20 @@ import io.reactivex.schedulers.Schedulers;
 public class EditContact extends ViewModel {
 
     private final ContactDao contactDao;
-    private final PhoneDao phoneDao;
+    private final long contactId;
 
-    public EditContact(ContactDao contactDao, PhoneDao phoneDao) {
+    public EditContact(ContactDao contactDao, long contactId) {
         this.contactDao = contactDao;
-        this.phoneDao = phoneDao;
+        this.contactId = contactId;
     }
 
-    public Flowable<Contact> getContact(long contactId) {
+    public Flowable<Contact> getContact() {
         return contactDao.getContactById(contactId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Flowable<List<Phone>> getPhones(long contactId) {
+    public Flowable<List<Phone>> getPhones() {
         return contactDao.getContactPhones(contactId)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread());
@@ -59,7 +55,7 @@ public class EditContact extends ViewModel {
             @Override
             public void run() throws Exception {
                 Phone[] phones = new Phone[mPhones.size()];
-                phoneDao.insertPhone(mPhones.toArray(phones));
+                contactDao.insertPhone(mPhones.toArray(phones));
             }
         }).subscribeOn(Schedulers.io())
                 .subscribe();
@@ -72,7 +68,7 @@ public class EditContact extends ViewModel {
         return new CompletableFromAction(new Action() {
             @Override
             public void run() throws Exception {
-                phoneDao.insertPhone(phone);
+                contactDao.insertPhone(phone);
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -83,7 +79,7 @@ public class EditContact extends ViewModel {
         new CompletableFromAction(new Action() {
             @Override
             public void run() throws Exception {
-                phoneDao.delete(phone);
+                contactDao.deletePhone(phone);
             }
         }).subscribeOn(Schedulers.io())
                 .subscribe();

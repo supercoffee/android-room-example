@@ -14,15 +14,10 @@ import android.widget.EditText;
 
 import com.example.roomdemo.db.AppDb;
 import com.example.roomdemo.db.Contact;
-import com.example.roomdemo.db.Phone;
 import com.example.roomdemo.viewmodel.EditContact;
 import com.example.roomdemo.viewmodel.EditContactFactory;
 
-import java.util.List;
-
-import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
 
 
 public class EditContactActivity extends AppCompatActivity {
@@ -32,20 +27,15 @@ public class EditContactActivity extends AppCompatActivity {
     EditText lastNameText;
     RecyclerView recyclerView;
     FloatingActionButton addPhoneFab;
+
+    // TODO: get rid of this cached value
     private Contact contact;
 
-    public List<Phone> phones;
     private EditContact editContactModel;
 
     private CompositeDisposable disposables = new CompositeDisposable();
 
-    private ContactPhoneAdapater.OnRemoveListener onPhoneRemoved =
-            new ContactPhoneAdapater.OnRemoveListener() {
-                @Override
-                public void onRemove(Phone phone) {
-                    editContactModel.deletePhone(phone);
-                }
-            };
+    private ContactPhoneAdapater adapter;
 
     public static Intent intentFrom(Context context, Contact contact) {
         Intent i = new Intent(context, EditContactActivity.class);
@@ -79,23 +69,10 @@ public class EditContactActivity extends AppCompatActivity {
         });
 
         AppDb db = AppDb.instance(this);
-        EditContactFactory factory = new EditContactFactory(db.contactDao(), db.phoneDao());
+        EditContactFactory factory = new EditContactFactory(db.contactDao(), contact.id);
         editContactModel = ViewModelProviders.of(this, factory).get(EditContact.class);
-    }
-
-    @Override
-    protected void onResume() {
-        disposables.add(
-                editContactModel.getPhones(contact.id)
-                        .subscribe(new Consumer<List<Phone>>() {
-                            @Override
-                            public void accept(@NonNull List<Phone> phones) throws Exception {
-                                EditContactActivity.this.phones = phones;
-                                recyclerView.setAdapter(new ContactPhoneAdapater(phones, onPhoneRemoved));
-                            }
-                        })
-        );
-        super.onResume();
+        adapter = new ContactPhoneAdapater(editContactModel);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -107,7 +84,7 @@ public class EditContactActivity extends AppCompatActivity {
     }
 
     private void savePhones() {
-        editContactModel.savePhones(phones);
+        adapter.saveItems();
     }
 
     private void saveContact() {

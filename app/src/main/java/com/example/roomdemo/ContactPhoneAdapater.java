@@ -1,6 +1,7 @@
 package com.example.roomdemo;
 
 import android.content.res.Resources;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,22 +12,37 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.example.roomdemo.db.Phone;
+import com.example.roomdemo.viewmodel.EditContact;
 
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
 class ContactPhoneAdapater extends RecyclerView.Adapter<ContactPhoneVH> {
 
-    interface OnRemoveListener {
-        void onRemove(Phone phone);
+    private final EditContact editContactModel;
+
+    @Nullable
+    private List<Phone> phones;
+
+    public ContactPhoneAdapater(EditContact editContactModel) {
+        this.editContactModel = editContactModel;
+
+        this.editContactModel.getPhones()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<Phone>>() {
+                    @Override
+                    public void accept(@NonNull List<Phone> phones) throws Exception {
+                        ContactPhoneAdapater.this.phones = phones;
+                        notifyDataSetChanged();
+                    }
+                });
     }
 
-    private final List<Phone> phones;
-    private final OnRemoveListener removeListener;
-
-    public ContactPhoneAdapater(List<Phone> phones, OnRemoveListener removeListener) {
-        this.phones = phones;
-        this.removeListener = removeListener;
-    }
 
     @Override
     public ContactPhoneVH onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -62,7 +78,7 @@ class ContactPhoneAdapater extends RecyclerView.Adapter<ContactPhoneVH> {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                removeListener.onRemove(phone);
+                editContactModel.deletePhone(phone);
             }
         };
     }
@@ -106,6 +122,12 @@ class ContactPhoneAdapater extends RecyclerView.Adapter<ContactPhoneVH> {
 
     @Override
     public int getItemCount() {
-        return phones.size();
+        return phones != null ? phones.size() : 0;
+    }
+
+    public void saveItems() {
+        if (this.phones != null) {
+            editContactModel.savePhones(this.phones);
+        }
     }
 }

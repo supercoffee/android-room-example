@@ -5,8 +5,6 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 
-import io.reactivex.Flowable;
-
 @Dao
 public interface PhoneDao {
 

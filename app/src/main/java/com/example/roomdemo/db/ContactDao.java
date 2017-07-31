@@ -1,12 +1,10 @@
 package com.example.roomdemo.db;
 
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
-
-import org.reactivestreams.Publisher;
-import org.reactivestreams.Subscriber;
 
 import java.util.List;
 
@@ -27,4 +25,10 @@ public interface ContactDao {
 
     @Query("SELECT * FROM contacts")
     Flowable<List<Contact>> selectAll();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    List<Long> insertPhone(Phone ... phones);
+
+    @Delete
+    void deletePhone(Phone phone);
 }
