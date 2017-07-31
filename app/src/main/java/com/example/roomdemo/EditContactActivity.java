@@ -9,6 +9,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
@@ -72,6 +76,28 @@ public class EditContactActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_edit_contact, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_delete_contact:
+                deleteContact();
+                return true;
+        }
+        return false;
+    }
+
+    private void deleteContact() {
+        editContactModel.deleteContact();
+        contact = null;
+        finish();
+    }
+
+    @Override
     protected void onPause() {
         saveContact();
         savePhones();
@@ -79,10 +105,16 @@ public class EditContactActivity extends AppCompatActivity {
     }
 
     private void savePhones() {
+        if (contact == null) {
+            return;
+        }
         adapter.saveItems();
     }
 
     private void saveContact() {
+        if (contact == null) {
+            return;
+        }
         contact.firstName = firstNameText.getText().toString();
         contact.lastName = lastNameText.getText().toString();
 

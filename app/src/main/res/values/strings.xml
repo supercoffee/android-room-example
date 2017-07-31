@@ -5,6 +5,7 @@
     <string name="last_name">Last Name</string>
     <string name="phone_number">Phone Number</string>
     <string name="delete_phone">Delete phone</string>
+    <string name="delete">Delete</string>
 
     <string-array name="phone_types">
         <item name="cell">Cell</item>

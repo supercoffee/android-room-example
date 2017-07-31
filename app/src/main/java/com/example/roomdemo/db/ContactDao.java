@@ -31,4 +31,7 @@ public interface ContactDao {
 
     @Delete
     void deletePhone(Phone phone);
+
+    @Delete
+    void deleteContact(Contact ... toDelete);
 }

@@ -54,20 +54,9 @@ public class MainActivity extends AppCompatActivity {
 
         ContactListFactory cf = new ContactListFactory(AppDb.instance(this).contactDao());
         contactListModel = ViewModelProviders.of(this, cf).get(ContactList.class);
+        recyclerView.setAdapter(new ContactListAdapter(contactListModel, onItemClickListener));
     }
 
-    @Override
-    protected void onResume() {
-        contactListModel.getAllContacts()
-                .subscribe(new Consumer<List<Contact>>() {
-                    @Override
-                    public void accept(@NonNull List<Contact> contacts) throws Exception {
-                        recyclerView.setAdapter(new ContactListAdapter(contacts, onItemClickListener));
-                    }
-                });
-
-        super.onResume();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

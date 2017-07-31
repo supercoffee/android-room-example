@@ -7,8 +7,10 @@ import com.example.roomdemo.db.ContactDao;
 import com.example.roomdemo.db.Phone;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
@@ -84,4 +86,17 @@ public class EditContact extends ViewModel {
         }).subscribeOn(Schedulers.io())
                 .subscribe();
     }
+
+    public void deleteContact() {
+        new CompletableFromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                Contact toDelete = new Contact();
+                toDelete.id = contactId;
+                contactDao.deleteContact(toDelete);
+            }
+        }).subscribeOn(Schedulers.io())
+                .subscribe();
+    }
+
 }

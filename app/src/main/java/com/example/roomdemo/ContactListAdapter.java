@@ -1,13 +1,18 @@
 package com.example.roomdemo;
 
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.roomdemo.db.Contact;
+import com.example.roomdemo.viewmodel.ContactList;
 
 import java.util.List;
+
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 
 class ContactListAdapter extends RecyclerView.Adapter<ContactListItemHolder> {
 
@@ -15,12 +20,23 @@ class ContactListAdapter extends RecyclerView.Adapter<ContactListItemHolder> {
         void onItemClicked(View v, Contact c);
     }
 
-    final List<Contact> contacts;
-    final OnItemClickListener clickListener;
+    private final ContactList viewModel;
+    private final OnItemClickListener clickListener;
 
-    ContactListAdapter(List<Contact> contacts, OnItemClickListener clickListener) {
-        this.contacts = contacts;
+    @Nullable
+    private List<Contact> contacts;
+
+    ContactListAdapter(ContactList contacts, OnItemClickListener clickListener) {
         this.clickListener = clickListener;
+        this.viewModel = contacts;
+        this.viewModel.getAllContacts()
+                .subscribe(new Consumer<List<Contact>>() {
+                    @Override
+                    public void accept(@NonNull List<Contact> contacts) throws Exception {
+                        ContactListAdapter.this.contacts = contacts;
+                        notifyDataSetChanged();
+                    }
+                });
     }
 
     @Override
@@ -46,6 +62,6 @@ class ContactListAdapter extends RecyclerView.Adapter<ContactListItemHolder> {
 
     @Override
     public int getItemCount() {
-        return contacts.size();
+        return contacts != null ? contacts.size() : 0;
     }
 }
