@@ -11,7 +11,7 @@ import butterknife.ButterKnife;
 class ContactPhoneVH extends RecyclerView.ViewHolder {
 
     @BindView(R.id.sp_phone_type)
-    Spinner selectedType;
+    Spinner selectedTypeSpinner;
 
     @BindView(R.id.et_phone)
     EditText phoneNumberText;
@@ -19,7 +19,7 @@ class ContactPhoneVH extends RecyclerView.ViewHolder {
     ContactPhoneVH(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
-        assert selectedType != null;
+        assert selectedTypeSpinner != null;
         assert phoneNumberText != null;
     }
 

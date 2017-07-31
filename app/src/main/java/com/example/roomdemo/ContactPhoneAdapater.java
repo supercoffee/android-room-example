@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.example.roomdemo.db.Phone;
@@ -37,19 +38,38 @@ class ContactPhoneAdapater extends RecyclerView.Adapter<ContactPhoneVH> {
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(holder.itemView.getContext(), R.array.phone_types, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        holder.selectedType.setAdapter(adapter);
+        holder.selectedTypeSpinner.setAdapter(adapter);
 
         for (int i = 0; i < types.length; i++) {
             String s = types[i];
             if (s.equals(phone.type)) {
-                holder.selectedType.setSelection(i);
+                holder.selectedTypeSpinner.setSelection(i);
                 break;
             }
         }
-        holder.phoneNumberText.addTextChangedListener(textWatcher(phone));
+        holder.phoneNumberText.addTextChangedListener(onTextChanged(phone));
+        holder.selectedTypeSpinner.setOnItemSelectedListener(onItemSelected(phone));
     }
 
-    private TextWatcher textWatcher(final Phone phone) {
+    private AdapterView.OnItemSelectedListener onItemSelected(final Phone phone) {
+
+        return new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Object selection = adapterView.getAdapter().getItem(i);
+                if (selection != null && selection.getClass().isAssignableFrom(String.class)) {
+                    phone.type = (String) selection;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        };
+    }
+
+    private TextWatcher onTextChanged(final Phone phone) {
         return new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
