@@ -89,10 +89,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.fab_add_contact)
-    public void onFabClick(View v) {
+    public void onFabClick(final View v) {
+        v.setEnabled(false);
         contactListModel.createContact().subscribe(new Consumer<Contact>() {
             @Override
             public void accept(@NonNull Contact contact) throws Exception {
+                v.setEnabled(true);
                 launchContactEditor(contact);
             }
         });
