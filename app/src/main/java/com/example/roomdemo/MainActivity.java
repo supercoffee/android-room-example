@@ -18,21 +18,29 @@ import com.example.roomdemo.viewmodel.ContactListFactory;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 
 public class MainActivity extends AppCompatActivity {
 
+    @BindView(R.id.recycler)
     RecyclerView recyclerView;
 
     private ContactListAdapter.OnItemClickListener onItemClickListener =
             new ContactListAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClicked(View v, Contact c) {
-                    Intent startEditContactActivity = EditContactActivity.intentFrom(MainActivity.this, c);
-                    startActivity(startEditContactActivity);
+                    launchContactEditor(c);
                 }
             };
+
+    private void launchContactEditor(Contact c) {
+        Intent startEditContactActivity = EditContactActivity.intentFrom(MainActivity.this, c);
+        startActivity(startEditContactActivity);
+    }
 
     private ContactList contactListModel;
 
@@ -40,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        recyclerView = findViewById(R.id.recycle);
+        ButterKnife.bind(this);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         ContactListFactory cf = new ContactListFactory(AppDb.instance(this).contactDao());
@@ -77,5 +86,15 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return false;
+    }
+
+    @OnClick(R.id.fab_add_contact)
+    public void onFabClick(View v) {
+        contactListModel.createContact().subscribe(new Consumer<Contact>() {
+            @Override
+            public void accept(@NonNull Contact contact) throws Exception {
+                launchContactEditor(contact);
+            }
+        });
     }
 }

@@ -2,6 +2,7 @@ package com.example.roomdemo.db;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.io.Serializable;
@@ -18,9 +19,13 @@ public class Contact implements Serializable{
     @ColumnInfo(name = "last_name")
     public String lastName;
 
+
+    @Ignore
     public Contact(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
+    public Contact() {
+    }
 }
