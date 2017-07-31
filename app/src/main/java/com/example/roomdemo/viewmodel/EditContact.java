@@ -7,10 +7,8 @@ import com.example.roomdemo.db.ContactDao;
 import com.example.roomdemo.db.Phone;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import io.reactivex.Flowable;
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;

@@ -16,8 +16,6 @@ import com.example.roomdemo.db.Contact;
 import com.example.roomdemo.viewmodel.ContactList;
 import com.example.roomdemo.viewmodel.ContactListFactory;
 
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
